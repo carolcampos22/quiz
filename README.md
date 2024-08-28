@@ -5,12 +5,11 @@ Projeto fullstack com Next.js de uma aplicaçção de perguntas e respostas, de 
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
-pnpm dev
-# or
-bun dev```
+```
 
 ## Próximos passos
 - Frontend
+
+
