@@ -1,3 +1,4 @@
+import { shuffle } from "../functions/arrays"
 import ResponseModel from "./response"
 
 export default class QuestionModel {
@@ -33,11 +34,28 @@ export default class QuestionModel {
         return this.#responses.some(response => response.revealed);
     }
 
+    answerWith(index: number): QuestionModel{
+        const answeredRight = this.#responses[index]?.right
+        const responses = this.#responses.map((response, i) => {
+            const selectedResponse = index === i
+            const mustReveal = selectedResponse || response.right
+            return mustReveal ? response.reveal() : response
+        })
+
+        return new QuestionModel(this.id, this.question, responses, answeredRight)
+    }
+
+    shuffleResponses(): QuestionModel{
+        let shuffledResponses = shuffle(this.#responses)
+        return new QuestionModel(this.#id, this.#question, shuffledResponses, this.#rightAnswer)
+    }
+
     toObject() {
         return {
             id: this.#id,
             question: this.#question,
             responses: this.#responses.map(response => response.toObject()),
+            answered: this.answered,
             rightAnswer: this.#rightAnswer,
         }
     }

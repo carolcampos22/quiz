@@ -16,7 +16,7 @@ export default (
     const questionExistsOrNot = questions.filter(question => question.id === selectedId)
 
     if(questionExistsOrNot.length === 1){
-      const selectedQuestion = questionExistsOrNot[0]
+      const selectedQuestion = questionExistsOrNot[0].shuffleResponses()
       res.status(200).json(selectedQuestion.toObject());
     } else {
       res.status(204).send(res)
