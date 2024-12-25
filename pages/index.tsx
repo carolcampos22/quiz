@@ -15,10 +15,13 @@ export default function Home() {
   const [question, setQuestion] = useState(questionMock)
 
   function onResponse(index: number){
-    console.log(index);
-    setQuestion(question.answerWith(index))
-    
-    
+    setQuestion(question.answerWith(index))    
+  }
+
+  function timeOut() {
+    if(!question.answered) {
+      setQuestion(question.answerWith(-1))
+    }
   }
   return (
     <div style={{
@@ -29,7 +32,9 @@ export default function Home() {
     }}>
       <Question
         value={question}
+        timeToAnswer={5}
         onResponse={onResponse }
+        timeOut={timeOut}
       />
     </div>
   );
