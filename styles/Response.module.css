@@ -1,0 +1,71 @@
+.response {
+    display: flex;
+    min-width: 40vw;
+    width: 80%;
+    height: 12vh;
+    margin: .9rem;
+}
+
+.responseContent {
+    position: relative; 
+    display: flex;
+    flex: 1;
+}
+
+.front, .back {
+    position: absolute; 
+    display: flex;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.front {
+    align-items: center;
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 1rem;
+    color: black;
+
+    z-index: 1;
+}
+
+.back > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    border-radius: 12px;
+}
+
+.right {
+    background-color: #2BAA6D;
+}
+
+.wrong {
+    background-color: #E44A44;
+}
+
+.right .value, .wrong .value {
+    font-size: 1.5rem;
+}
+
+.letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5vh;
+    width: 5vh;
+    margin-right: 1vw;
+    border-radius: 2.5vh;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background-color: #fff;
+    color: black;
+}
