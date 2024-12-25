@@ -2,10 +2,13 @@ import styles from '../styles/Question.module.css'
 import QuestionModel from "../model/question";
 import Prompt from './Prompt';
 import Response from './Response';
+import Timer from './Timer';
 
 interface QuestionProps {
     value: QuestionModel
+    timeToAnswer?: number
     onResponse: (index: number) => void
+    timeOut: () => void
 }
 
 const letters = [
@@ -34,6 +37,7 @@ export default function Question(props: QuestionProps) {
     return (
         <div className={styles.question}>
             <Prompt text={question.question} />
+            <Timer duration={props.timeToAnswer ?? 10} timeOut={props.timeOut} />
             {renderResponses()}
         </div>
     )
