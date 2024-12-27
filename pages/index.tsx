@@ -1,44 +1,80 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Question from '../components/Question';
 import QuestionModel from '../model/question';
 import ResponseModel from '../model/response';
 import styles from '../styles/Home.module.css'
 import Button from '../components/Button';
+import Questionnaire from '../components/Questionnaire';
+import { useRouter } from 'next/router';
 
-const questionMock = new QuestionModel(300, 'Melhor cor?', [
-  ResponseModel.wrong('Verde'),
-  ResponseModel.wrong('Vermelha'),
-  ResponseModel.wrong('Azul'),
-  ResponseModel.right('Rosa')
-])
+
+const BASE_URL = 'http://localhost:3000/api'
 export default function Home() {
+  const router = useRouter()
 
-  const [question, setQuestion] = useState(questionMock)
+  const [questionsIds, setQuestionsIds] = useState<number[]>([])
+  const [question, setQuestion] = useState<QuestionModel>()
+  const [rightAnswers, setRightAnswers] = useState<number>(0)
 
-  function onResponse(index: number){
-    setQuestion(question.answerWith(index))    
+  async function loadQuestionsIds() {
+    const resp = await fetch(`${BASE_URL}/questionnaire`)
+    const questionsIds = await resp.json()
+    console.log(questionsIds);
+
+    setQuestionsIds(questionsIds)
   }
 
-  function timeOut() {
-    if(!question.answered) {
-      setQuestion(question.answerWith(-1))
-    }
+  async function loadQuestion(questionId: number) {
+    const resp = await fetch(`${BASE_URL}/questions/${questionId}`)
+    const json = await resp.json()
+    const newQuestion = QuestionModel.createUsingObject(json)
+    setQuestion(newQuestion)
   }
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-    }}>
-      <Question
-        value={question}
-        timeToAnswer={5}
-        onResponse={onResponse }
-        timeOut={timeOut}
+
+  useEffect(() => {
+    loadQuestionsIds()
+  }, [])
+
+  useEffect(() => {
+    questionsIds.length > 0 && loadQuestion(questionsIds[0])
+  }, [questionsIds])
+
+  function answeredQuestion(answeredQuestion: QuestionModel) {
+    setQuestion(answeredQuestion)
+    const right = answeredQuestion.rightAnswer
+    setRightAnswers(rightAnswers + (right ? 1 : 0))
+  }
+
+  function idNextQuestion() {
+    const nextIndex = questionsIds.indexOf(question.id) + 1
+      return questionsIds[nextIndex]
+  }
+
+  function goToNextStep() {
+    const nextId = idNextQuestion()
+    nextId ? goToNextQuestion(nextId) : endQuestions()
+  }
+
+  function goToNextQuestion(nextId: number) {
+    loadQuestion(nextId)
+  }
+
+  function endQuestions() {
+    router.push({
+      pathname: "/result",
+      query: {
+        total: questionsIds.length,
+        right: rightAnswers
+      }
+    })
+  }
+
+  return question? (
+    <Questionnaire
+        question={question}
+        last={idNextQuestion() === undefined}
+        answeredQuestion={answeredQuestion}
+        goToNextStep={goToNextStep}
       />
-      <Button text='Próxima questão' href='/result' />
-    </div>
-  );
+  ) : false;
 }
