@@ -33,6 +33,10 @@ export default class ResponseModel {
         return new ResponseModel(this.#value, this.#right, true)
     }
 
+    static createUsingObject(obj: ResponseModel): ResponseModel {
+        return new ResponseModel(obj.value, obj.right, obj.revealed)
+    }
+
     toObject() {
         return {
             value: this.#value,
