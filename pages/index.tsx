@@ -46,7 +46,7 @@ export default function Home() {
   }
 
   function idNextQuestion() {
-    const nextIndex = questionsIds.indexOf(question.id) + 1
+    const nextIndex = questionsIds.indexOf(question ? question.id : 0) + 1
       return questionsIds[nextIndex]
   }
 
