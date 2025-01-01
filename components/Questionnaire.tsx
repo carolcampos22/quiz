@@ -23,7 +23,7 @@ export default function Questionnaire(props: QuestionnaireProps) {
             {props.question ? (
                 <Question
                     value={props.question}
-                    timeToAnswer={5}
+                    timeToAnswer={20}
                     onResponse={onResponse}
                     timeOut={props.goToNextStep}
                 />
