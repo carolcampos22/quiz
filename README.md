@@ -10,6 +10,11 @@ yarn dev
 ```
 
 ## Próximos passos
-- Frontend
+- Botão de reiniciar/finalizar
+- definição de quantidade de perguntas pelo usuário
+- página inicial
+- pular para a próxima pergunta ao responder
+- correções nas perguntas
+- melhorias na estilização
 
 
